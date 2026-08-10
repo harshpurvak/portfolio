@@ -28,7 +28,8 @@ const Navbar = () => {
 
   return (
     <>
-      <div className="relative z-50 flex items-center justify-between py-4">
+      <div className="fixed top-0 left-0 z-50 w-full ">
+        <div className=" mx-auto flex w-full max-w-[1440px] items-center justify-between px-8 py-6">
         <button
           className="cursor-pointer"
           onClick={() => setMenuOpen(!menuOpen)}
@@ -54,6 +55,7 @@ const Navbar = () => {
             </a>
           ))}
         </div>
+      </div>
       </div>
 
       <div
