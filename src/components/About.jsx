@@ -27,103 +27,155 @@ const journey = [
 
 const About = () => {
   const sectionRef = useRef(null);
+  const headingRef = useRef(null);
   const cardRefs = useRef([]);
 
- useGSAP(
-  () => {
-    const cards = cardRefs.current;
+  useGSAP(
+    () => {
+      const cards = cardRefs.current;
 
-    gsap.set(cards, {
-      autoAlpha: 0,
-      y: 60,
-    });
+      // --------------------------------
+      // INITIAL CARD STATES
+      // --------------------------------
 
-    gsap.set(cards[0], {
-      autoAlpha: 1,
-      y: 0,
-    });
-
-    const timeline = gsap.timeline({
-      scrollTrigger: {
-        trigger: sectionRef.current,
-        start: "top top",
-        end: "+=3000",
-        scrub: 1,
-        pin: false,
-      },
-    });
-
-    timeline
-      .to({}, { duration: 2 })
-
-      .to(cards[0], {
+      gsap.set(cards, {
         autoAlpha: 0,
-        y: -60,
-        duration: 1,
-        ease: "power2.inOut",
-      })
-      .to(
-        cards[1],
+        y: 60,
+      });
+
+      gsap.set(cards[0], {
+        autoAlpha: 1,
+        y: 0,
+      });
+
+      // --------------------------------
+      // LEFT HEADING REVEAL
+      // --------------------------------
+
+      gsap.fromTo(
+        headingRef.current,
+        {
+          autoAlpha: 0,
+          y: 60,
+        },
         {
           autoAlpha: 1,
           y: 0,
           duration: 1,
-          ease: "power2.inOut",
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top 75%",
+            once: true,
+          },
+        }
+      );
+
+      // --------------------------------
+      // SCROLL JOURNEY
+      // --------------------------------
+
+      const timeline = gsap.timeline({
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top top",
+          end: "bottom top",
+          scrub: 0.8,
         },
-        "<"
-      )
+      });
 
-      .to({}, { duration: 2 })
+      timeline
 
-      .to(cards[1], {
-        autoAlpha: 0,
-        y: -60,
-        duration: 1,
-        ease: "power2.inOut",
-      })
-      .to(
-        cards[2],
-        {
-          autoAlpha: 1,
-          y: 0,
-          duration: 1,
+        // Hold first card
+        .to({}, { duration: 90 })
+
+        // Card 01 OUT
+        .to(cards[0], {
+          autoAlpha: 0,
+          y: -60,
+          duration: 40,
           ease: "power2.inOut",
-        },
-        "<"
-      )
+        })
 
-      .to({}, { duration: 2 });
-  },
-  { scope: sectionRef }
-);
+        // Card 02 IN
+        .to(
+          cards[1],
+          {
+            autoAlpha: 1,
+            y: 0,
+            duration: 40,
+            ease: "power2.inOut",
+          },
+          "<"
+        )
+
+        // Hold second card
+        .to({}, { duration: 90 })
+
+        // Card 02 OUT
+        .to(cards[1], {
+          autoAlpha: 0,
+          y: -60,
+          duration: 40,
+          ease: "power2.inOut",
+        })
+
+        // Card 03 IN
+        .to(
+          cards[2],
+          {
+            autoAlpha: 1,
+            y: 0,
+            duration: 40,
+            ease: "power2.inOut",
+          },
+          "<"
+        )
+
+        // Hold final card
+        .to({}, { duration: 400 });
+    },
+    {
+      scope: sectionRef,
+    }
+  );
 
   return (
     <section
       id="about"
       ref={sectionRef}
-      className="min-h-[300vh] border-t border-black"
+      className="relative h-[300vh] border-t border-black/15"
     >
-      <div className="grid gap-14 py-20 lg:grid-cols-2">
+      <div className="grid h-full gap-14 py-20 lg:grid-cols-2">
+        {/* LEFT SIDE */}
+
         <div className="lg:sticky lg:top-24 lg:h-[calc(100vh-6rem)]">
-          <h2 className="text-[clamp(3.5rem,8vw,9rem)] font-bold uppercase leading-[0.82] tracking-[-0.06em]">
+          <h2
+            ref={headingRef}
+            className="text-[clamp(3.5rem,8vw,9rem)] font-bold uppercase leading-[0.82] tracking-[-0.06em]"
+          >
             from
             <br />
             numbers to
             <br />
-            code
+            <span className="text-amber-600">code</span>
           </h2>
 
-          {/* <div className="mt-12 max-w-xl ">
-            <p className="text-xl leading-relaxed md:text-2xl">
-              I am a commerce graduate who worked in audit and data
-              engineering, and now I work as a developer.
+          <div className="mt-10 max-w-sm">
+            <div className="mb-5 h-px w-12" />
+
+            <p className="text-sm font-medium uppercase leading-relaxed tracking-[0.12em] text-neutral-500">
+              A journey from commerce and systems to building digital
+              experiences.
             </p>
-          </div> */}
+          </div>
         </div>
 
-        <div className="relative min-h-[400vh]">
+        {/* RIGHT SIDE */}
+
+        <div className="relative">
           <div className="sticky top-4 flex h-[calc(100vh-6rem)] items-center pl-6">
-            <div className="relative h-[24rem] w-full">
+            <div className="relative h-[26rem] w-full">
               {journey.map((item, index) => (
                 <article
                   key={item.title}
@@ -132,15 +184,27 @@ const About = () => {
                   }}
                   className="absolute inset-0 flex flex-col justify-center"
                 >
-                  <span className="mb-6 text-sm font-bold uppercase tracking-[0.2em] text-amber-600">
+                  {/* NUMBER */}
+
+                  <span className="mb-6 text-xs font-semibold uppercase tracking-[0.25em] text-amber-600">
                     {item.number}
                   </span>
-                  <h3 className="text-[clamp(3rem,7vw,8rem)] font-bold uppercase leading-[0.82] tracking-[-0.06em]">
+
+                  {/* TITLE */}
+
+                  <h3 className="max-w-4xl text-[clamp(3rem,7vw,8rem)] font-bold uppercase leading-[0.82] tracking-[-0.06em]">
                     {item.title}
                   </h3>
-                  <p className="mt-8 max-w-md text-lg leading-relaxed text-neutral-700 md:text-xl">
+
+                  {/* DESCRIPTION */}
+
+                  <p className="mt-8 max-w-lg text-lg leading-relaxed text-neutral-600 md:text-xl">
                     {item.text}
                   </p>
+
+                  {/* SMALL LINE */}
+
+                  <div className="mt-10 h-px w-16 bg-black/30" />
                 </article>
               ))}
             </div>
