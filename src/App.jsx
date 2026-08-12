@@ -9,7 +9,7 @@ import Contact from "./components/Contact";
 const App = () => {
   return (
     <div className="min-h-screen w-full bg-background text-foreground">
-      <div className="mx-auto min-h-screen max-w-360 bg-background px-6 py-6">
+      <div className="mx-auto min-h-screen bg-background px-6 py-6">
         <Navbar />
 
         <main>
