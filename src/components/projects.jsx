@@ -240,7 +240,7 @@ const Projects = () => {
                 flex-col
                 justify-between
                 overflow-hidden
-                rounded-[2rem]
+                rounded-4xl
                 border
                 border-black/10
                 bg-[#EDE4D6]
@@ -261,10 +261,10 @@ const Projects = () => {
                   pointer-events-none
                   absolute
                   inset-0
-                  bg-gradient-to-br
+                  bg-linear-to-br
                   from-white/20
                   via-transparent
-                  to-black/[0.03]
+                  to-black/3
                   opacity-0
                   transition-opacity
                   duration-500
