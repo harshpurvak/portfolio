@@ -236,7 +236,7 @@ const Navbar = () => {
             </span>
 
             <span className="text-xs uppercase tracking-[0.2em] text-neutral-400">
-              Frontend Developer / 2026
+              Full Stack / 2026
             </span>
           </div>
         </div>
